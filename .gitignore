@@ -1,0 +1,17 @@
+# build
+/build
+/out
+/bin
+
+# cmake
+CMakeFiles
+CMakeCache.txt
+cmake-build-*
+compile_commands.json
+
+# vscode optional
+.vscode/
+
+# executables
+*.exe
+*.out
