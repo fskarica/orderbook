@@ -1,22 +1,23 @@
 #pragma once
-
-/*
-Limit order  -> Enters the book if it cannot be matched immediately at the given price
-Market order -> Matches immediately with the best available price
-Cancel       -> Removes an existing order by its ID
-Modify       -> Changes an existing order (cancel + new)
-
-GTC -> Good Till Cancel
-IOC -> Immediate Or Cancel
-FOK -> Fill Or Kill
-*/
+#include "order.hpp"
+#include <map>
+#include <queue>
 
 class OrderBook {
 public:
-    enum class OrderType { Limit, Market, Cancel, Modify };
-    enum class TimeInForce { GTC, IOC, FOK };
-    enum class Side { Buy, Sell };
+    void process(const Order& o);
 
 private:
+    void handleLimit(const Order& o);
+    void handleMarket(const Order& o);
+    void handleCancel(const Order& o);
+    void handleModify(const Order& o);
 
-}
+    void matchAgainstOppositeSide(const Order& incoming);
+    void addRestingOrder(const Order& o);
+    void removeOrderById(Order::OrderId id);
+
+    std::map<Order::OrderId, Order> ordersById_;
+    std::map<Order::Price, std::deque<Order::OrderId>, std::greater<Order::Price>> bids_;
+    std::map<Order::Price, std::deque<Order::OrderId>> asks_;
+};
