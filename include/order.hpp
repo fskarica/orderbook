@@ -22,6 +22,7 @@ struct Order {
     using Quantity = std::uint32_t;
 
     OrderType orderType;
+    OrderType orderTypeNew;
     TimeInForce tif;
 
     Side side;
